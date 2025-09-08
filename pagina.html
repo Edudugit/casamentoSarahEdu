@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Casamento — Sarah & Eduardo</title>
+  <meta name="description" content="Site de casamento com lista de presentes, informações do espaço e dress code para padrinhos e madrinhas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+
+    /* Galeria de Fotos */
+ .photo-card img{
+ width:100%;
+ height: 600px;px; /* Altura fixa para as imagens */
+ object-fit:cover; /* Corta a imagem para preencher o espaço */
+ border-radius:var(--radius) var(--radius) 0 0;
+ }
+ .photo-card figcaption{
+ padding:20px;
+ font-size:15px;
+ color:var(--muted);
+ }
+    :root{
+      --bg:#fffaf7;
+      --paper:#ffffff;
+      --text:#2a2a2a;
+      --muted:#6f6f6f;
+      --primary:#E35336; /* rose clay */
+      --primary-700:#b37370;
+      --accent:#7aa4a4;  /* sage ocean */
+      --gold:#c8a86b;
+      --success:#2f855a;
+      --danger:#b83232;
+      --shadow:0 10px 30px rgba(0,0,0,.08);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    img{max-width:100%;display:block}
+    a{color:var(--primary);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* Header */
+    header{
+      position:sticky;top:0;z-index:999;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);
+      border-bottom:1px solid rgba(0,0,0,.05)
+    }
+    .nav{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:12px 20px}
+    .brand{font-family:"Playfair Display",serif;font-weight:700;letter-spacing:.5px}
+    .nav ul{margin:0 0 0 auto;padding:0;display:flex;gap:14px;list-style:none}
+    .nav a.navlink{padding:8px 12px;border-radius:14px;display:inline-block}
+    .nav a.navlink:hover{background:#00000008;text-decoration:none}
+    .btn-primary{background:var(--primary);color:#fff;padding:10px 16px;border-radius:999px;border:none;cursor:pointer;box-shadow:var(--shadow);font-weight:600}
+    .btn-primary:hover{background:var(--primary-700)}
+
+    /* Hero */
+    .hero{position:relative;overflow:hidden}
+    .hero-inner{max-width:1100px;margin:0 auto;padding:80px 20px 60px;display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center}
+    .hero h1{font-family:"Playfair Display",serif;font-size:clamp(34px,4.5vw,62px);margin:0 0 8px;line-height:1.06}
+    .hero p{margin:8px 0;color:var(--muted);font-size:18px}
+    .card{background:var(--paper);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .hero .card{padding:22px}
+    .tag{display:inline-flex;align-items:center;gap:8px;font-size:13px;background:#00000006;border:1px solid #0000000e;padding:6px 10px;border-radius:999px}
+    .kicker{font-family:"Playfair Display",serif;color:var(--primary);font-weight:600;letter-spacing:.4px}
+
+    .badge-date{display:inline-flex;gap:8px;align-items:center;background:var(--primary);color:#fff;border-radius:999px;padding:8px 12px;font-weight:600}
+    .countdown{display:flex;gap:10px;margin-top:10px}
+    .cd-item{background:#00000006;border:1px solid #0000000e;padding:10px 12px;border-radius:14px;text-align:center;min-width:66px}
+    .cd-item .num{font-weight:700;font-size:20px}
+    .cd-item .lbl{font-size:12px;color:var(--muted)}
+
+    .hero-photo{position:relative;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+    .hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(0,0,0,.2));}
+
+    /* Sections */
+    section{max-width:1100px;margin:40px auto;padding:0 20px}
+    section h2{font-family:"Playfair Display",serif;font-size:clamp(26px,3.2vw,40px);margin:0 0 6px}
+    section p.lead{color:var(--muted);margin:0 0 20px}
+
+    /* Grid */
+    .grid{display:grid;gap:18px}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .grid-2{grid-template-columns:repeat(2,1fr)}
+    @media (max-width:1200px){
+      .hero-inner{grid-template-columns:1fr}
+      .grid-3{grid-template-columns:1fr}
+      .grid-2{grid-template-columns:1fr}
+    }
+
+    /* Gift cards */
+    .gift-card{display:flex;flex-direction:column;overflow:hidden}
+    .gift-card img{width: 100%;
+  height: auto; /* altura automática */
+  object-fit: contain; /* mantém toda a imagem visível */
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: #f8f8f8; /* opcional, para preencher fundo se houver espaço */}
+    .gift-card .content{padding:16px;display:flex;flex-direction:column;gap:8px}
+    .gift-card .title{font-weight:700}
+    .gift-card .meta{color:var(--muted);font-size:14px}
+    .gift-card .actions{display:flex;gap:10px;margin-top:6px}
+    .chip{font-size:12px;border:1px solid #0000001a;padding:6px 10px;border-radius:999px;color:var(--muted)}
+    .status{margin-left:auto;font-size:12px;padding:6px 10px;border-radius:999px}
+    .status.available{background:#e6ffed;color:#276749;border:1px solid #c6f6d5}
+    .status.reserved{background:#fff5f5;color:#9b2c2c;border:1px solid #fed7d7}
+
+    /* Venue card */
+    .venue{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+    .venue .card{padding:18px}
+    .meta-list{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+    .meta-list li{display:flex;gap:10px;align-items:flex-start}
+
+    /* Dress code */
+    .swatches{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
+    .swatch{width:42px;height:42px;border-radius:12px;border:1px solid #00000014}
+    .dress-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    @media (max-width:900px){.dress-grid{grid-template-columns:1fr}}
+    .dress-card{padding:18px}
+
+    /* FAQ */
+    .accordion{display:grid;gap:10px}
+    details.card summary{cursor:pointer;font-weight:600;padding:14px 18px}
+    details.card .panel{padding:0 18px 18px;color:var(--muted)}
+
+    /* Footer */
+    footer{margin-top:60px;background:#111;color:#eaeaea}
+    .footer-inner{max-width:1100px;margin:0 auto;padding:28px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+    .copy{margin-left:auto}
+
+    /* Utilities */
+    .pill{border:1px solid #00000012;background:#fff;border-radius:999px;padding:8px 12px;display:inline-flex;gap:8px;align-items:center}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .hidden{display:none}
+    .center{text-align:center}
+    .mt-10{margin-top:10px}
+    .mt-20{margin-top:20px}
+
+    /* Scroll reveal */
+    .reveal{opacity:0;transform:translateY(14px);transition:all .6s ease}
+    .reveal.show{opacity:1;transform:none}
+
+    /* Floating action */
+    .fab{position:fixed;right:16px;bottom:16px;background:var(--accent);color:#fff;border:none;border-radius:999px;padding:14px 18px;box-shadow:var(--shadow);cursor:pointer}
+
+    /* Subtle confetti canvas */
+    canvas#confetti{position:fixed;pointer-events:none;inset:0;z-index:10}
+
+    /* ===== Global ===== */
+*{box-sizing:border-box}
+html, body{
+  margin:0;
+  padding:0;
+  width:100%;
+  overflow-x:hidden; /* evita scroll horizontal */
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+}
+
+/* ===== Containers ===== */
+.hero-inner, section, .venue, .dress-grid, .grid-2, .grid-3{
+  max-width:1100px;
+  margin:0 auto;
+  padding:0 20px;
+}
+
+
+/* ===== Grid responsivo ===== */
+@media (max-width:1200px){
+  .hero-inner{grid-template-columns:1fr; gap:20px; padding:20px;}
+  .grid-3{grid-template-columns:1fr; gap:15px;}
+  .grid-2{grid-template-columns:1fr; gap:15px;}
+  .dress-grid{grid-template-columns:1fr; gap:15px;}
+}
+
+/* ===== Mobile ultra-small ===== */
+@media (max-width:1200px){
+  header .nav{flex-direction:column; gap:10px;}
+  .hero-inner{padding:15px;}
+  .hero h1{font-size:clamp(24px,6vw,42px);}
+  .hero p{font-size:16px;}
+  .grid-3, .grid-2, .dress-grid{grid-template-columns:1fr; gap:10px;}
+  .pill, .btn-primary{width:100%; text-align:center;}
+  .row{flex-direction:column; gap:10px;}
+}
+.carousel {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  display: flex;
+  gap: 16px;
+  padding: 10px 0;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 16px;
+}
+
+.carousel-item {
+  flex: 0 0 auto;
+  width: 180px; /* largura do item */
+  height: 250px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease;
+}
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@media (max-width: 600px) {
+  .carousel-item {
+    width: 120px;
+    height: 180px;
+  }
+}
+
+.carousel-container {
+  position: relative;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.gallery-item {
+  width: 480px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.gallery-item:hover {
+  transform: scale(1.05);
+}
+
+/* Lightbox */
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.lightbox-img {
+  max-width: 90%;
+  max-height: 80%;
+  border-radius: 10px;
+}
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  text-align: left;
+}
+.trajes h2 {
+  text-align: left;
+  margin-bottom: 12px; /* opcional, deixa igual às outras seções */
+}
+
+
+
+
+
+
+  </style>
+</head>
+<body>
+  <audio id="musica-casamento" loop>
+  <source src="GRATIDÃO ｜ fhop music (Ao Vivo).mp3" type="audio/mpeg">
+</audio>
+
+<button id="play-pause" class="fab" style="bottom:70px">🎵</button>
+
+
+
+
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <header>
+    <nav class="nav">
+      <div class="brand">Sarah &amp; Eduardo</div>
+      <ul>
+        <li><a class="navlink" href="#presentes">Presentes</a></li>
+        <li><a class="navlink" href="#espaco">Espaço</a></li>
+        <li><a class="navlink" href="#trajes">Trajes</a></li>
+        <li><a class="navlink" href="#faq">FAQ</a></li>
+        <li><a class="navlink" href="#rsvp">RSVP</a></li>
+      </ul>
+      <button class="btn-primary" id="btnCopiarPix">Copiar PIX</button>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="card reveal">
+        <div class="tag">Convite</div>
+        <h1>Vamos celebrar o amor — <span class="kicker">25 de outubro de 2025</span></h1>
+        <p>Com muita alegria, convidamos você para o nosso casamento, às <b>09h00</b>, em uma tarde especial repleta de amor e gratidão.</p>
+        <div class="row mt-10">
+          <span class="badge-date" aria-live="polite">Faltam <span id="diasRestantes">--</span> dias</span>
+          <span class="pill">Local: <b>Av. Dona Cherubina Viana 1206</b></span>
+        </div>
+        <div class="countdown" aria-hidden="true">
+          <div class="cd-item"><div class="num" id="cdDias">--</div><div class="lbl">dias</div></div>
+          <div class="cd-item"><div class="num" id="cdHoras">--</div><div class="lbl">horas</div></div>
+          <div class="cd-item"><div class="num" id="cdMin">--</div><div class="lbl">min</div></div>
+          <div class="cd-item"><div class="num" id="cdSeg">--</div><div class="lbl">seg</div></div>
+        </div>
+        <div class="row mt-20">
+          <a class="btn-primary" href="#presentes">Ver lista de presentes</a>
+          <a class="pill" href="#espaco">Como chegar</a>
+        </div>
+      </div>
+      <figure class="hero-photo reveal" aria-label="Foto do casal">
+        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=1600&auto=format&fit=crop" alt="Casal em um jardim ao nascer do sol"/>
+      </figure>
+    </div>
+  </section>
+
+  <section id="presentes">
+    <h2 class="reveal">Lista de Presentes</h2>
+    <p class="lead reveal">Você pode escolher um item abaixo ou, se preferir, contribuir via PIX. Obrigado por fazer parte deste momento! 💛</p>
+
+    <div class="row mt-10 reveal">
+      <span class="pill">Chave PIX: <code id="pixKey">00020126580014BR.GOV.BCB.PIX0136c6c8f256-3161-44a7-9670-56bec4ad0e625204000053039865802BR5922Sarah Stefani Nogueira6009SAO PAULO62140510AGq60NL0B46304443E</code></span>
+      <button class="btn-primary" id="copyPix2">Copiar</button>
+      <span class="pill"><input id="busca" placeholder="Buscar presente…" style="border:none;outline:none"/></span>
+      <select id="filtro" class="pill" aria-label="Filtrar disponibilidade">
+        <option value="todos">Todos</option>
+        <option value="disponivel">Disponíveis</option>
+        <option value="reservado">Reservados</option>
+      </select>
+    </div>
+
+    <div class="grid grid-3 mt-20" id="giftGrid">
+      <!-- Exemplo de item de presente -->
+      <article class="card gift-card reveal" data-title="Para secar lágrimas de emoção" data-status="disponivel">
+        <img src="jogodetoalhas.webp" alt="Para secar lágrimas de emoção"/>
+        <div class="content">
+          <div class="row">
+            <div class="title">Para secar lágrimas de emoção</div>
+            <span class="status available">disponível</span>
+          </div>
+          <div class="meta">R$ 100</div>
+          <div class="row actions">
+            <button class="btn-primary reservar">Reservar</button>
+            
+          </div>
+        </div>
+      </article>
+
+      <article class="card gift-card reveal" data-title="Abridor de garrafas" data-status="disponivel">
+        <img src="abridordegarrafa.jpg" alt="Abridor de garrafas"/>
+        <div class="content">
+          <div class="row">
+            <div class="title">Abridor de garrafas</div>
+            <span class="status available">disponível</span>
+          </div>
+          <div class="meta">R$ 50</div>
+          <div class="row actions">
+            <button class="btn-primary reservar">Reservar</button>
+            
+          </div>
+        </div>
+      </article>
+      <article class="card gift-card reveal" data-title="Kit de paciência com sogros" data-status="disponivel">
+        <img src="baralho.jpg" alt="Kit de paciência com sogros"/>
+        <div class="content">
+          <div class="row">
+            <div class="title">Kit de paciência com sogros</div>
+            <span class="status available">disponível</span>
+          </div>
+          <div class="meta">R$ 1000</div>
+          <div class="row actions">
+            <button class="btn-primary reservar">Reservar</button>
+           
+          </div>
+        </div>
+      </article>
+      <article class="card gift-card reveal" data-title="Despertador" data-status="disponivel">
+        <img src="despertador.jpg" alt="Despertador"/>
+        <div class="content">
+          <div class="row">
+            <div class="title">Despertador</div>
+            <span class="status available">disponível</span>
+          </div>
+          <div class="meta">R$ 65</div>
+          <div class="row actions">
+            <button class="btn-primary reservar">Reservar</button>
+            
+          </div>
+        </div>
+      </article>
+      <article class="card gift-card reveal" data-title="Um mapa para nunca se perder no supermercado" data-status="disponivel">
+        <img src="mapa.webp" alt="Um mapa para nunca se perder no supermercado"/>
+        <div class="content">
+          <div class="row">
+            <div class="title">Um mapa para nunca se perder no supermercado</div>
+            <span class="status available">disponível</span>
+          </div>
+          <div class="meta">R$ 100</div>
+          <div class="row actions">
+            <button class="btn-primary reservar">Reservar</button>
+            
+          </div>
+        </div>
+      </article>
+      <article class="card gift-card reveal" data-title="Saco de café extra forte (para acordar juntos sem brigar)" data-status="disponivel">
+        <img src="istockphoto-453379099-612x612.jpg" alt="Saco de café extra forte (para acordar juntos sem brigar)"/>
+        <div class="content">
+          <div class="row">
+            <div class="title">Saco de café extra forte (para acordar juntos sem brigar)</div>
+            <span class="status available">disponível</span>
+          </div>
+          <div class="meta">R$ 80</div>
+          <div class="row actions">
+            <button class="btn-primary reservar">Reservar</button>
+            
+          </div>
+        </div>
+      </article>
+      <article class="card gift-card reveal" data-title="Panelas que não queimam nada (ou pelo menos prometem não queimar)" data-status="disponivel">
+        <img src="panela-queimada.webp" alt="Panelas que não queimam nada (ou pelo menos prometem não queimar)"/>
+        <div class="content">
+          <div class="row">
+            <div class="title">Panelas que não queimam nada (ou pelo menos prometem não queimar)</div>
+            <span class="status available">disponível</span>
+          </div>
+          <div class="meta">R$ 180</div>
+          <div class="row actions">
+            <button class="btn-primary reservar">Reservar</button>
+            
+          </div>
+        </div>
+      </article>
+      <article class="card gift-card reveal" data-title="Uma almofada de travessuras (para quem ronca)" data-status="disponivel">
+        <img src="images.jpg" alt="Uma almofada de travessuras (para quem ronca)"/>
+        <div class="content">
+          <div class="row">
+            <div class="title">Uma almofada de travessuras (para quem ronca)</div>
+            <span class="status available">disponível</span>
+          </div>
+          <div class="meta">R$ 90</div>
+          <div class="row actions">
+            <button class="btn-primary reservar">Reservar</button>
+            
+          </div>
+        </div>
+      </article>
+
+
+      <article class="card gift-card reveal" data-title="Sofá que absorve dramas de novela" data-status="reservado">
+        <img src="homem-cliente-sentado-com-psicólogo-no-sofá-confortável-durante-sessão-psicológica-186328326.webp" alt="Sofá que absorve dramas de novela"/>
+        <div class="content">
+          <div class="row">
+            <div class="title">Sofá que absorve dramas de novela</div>
+            <span class="status reserved">reservado</span>
+          </div>
+          <div class="meta">R$ 180</div>
+          <div class="row actions">
+            <button class="btn-primary reservar">Reservar</button>
+            
+          </div>
+        </div>
+      </article>
+
+      <article class="card gift-card reveal" data-title="Cobertor “anti-gelo”" data-status="disponivel">
+        <img src="marquinhos.avif" alt="Cobertor “anti-gelo”"/>
+        <div class="content">
+          <div class="row">
+            <div class="title">Cobertor “anti-gelo”</div>
+            <span class="status available">disponível</span>
+          </div>
+          <div class="meta">R$ 110</div>
+          <div class="row actions">
+            <button class="btn-primary reservar">Reservar</button>
+            
+          </div>
+        </div>
+      </article>
+
+      <article class="card gift-card reveal" data-title="Carrinho de Pipoca" data-status="disponivel">
+        <img src="pipoca.webp" alt="Carrinho de Pipoca"/>
+        <div class="content">
+          <div class="row">
+            <div class="title">Carrinho de Pipoca</div>
+            <span class="status available">disponível</span>
+          </div>
+          <div class="meta">R$ 150</div>
+          <div class="row actions">
+            <button class="btn-primary reservar">Reservar</button>
+            
+          </div>
+        </div>
+      </article>
+
+      <article class="card gift-card reveal" data-title="Cota Viagem Lua de Mel" data-status="disponivel">
+        <img src="contantodinheiro.jpg" alt="Praia paradisíaca"/>
+        <div class="content">
+          <div class="row">
+            <div class="title">Cota Viagem Lua de Mel</div>
+            <span class="status available">disponível</span>
+          </div>
+          <div class="meta">R$ 200 (valor sugerido)</div>
+          <div class="row actions">
+            <button class="btn-primary reservar">Reservar</button>
+            
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="espaco">
+    <h2 class="reveal">Informações do Espaço</h2>
+    <p class="lead reveal">Cerimônia e recepção no <b>Espaço Jardim das Oliveiras</b>. Chegue com 20 minutos de antecedência para acomodação.</p>
+
+    <div class="venue reveal">
+      <div class="card">
+        <ul class="meta-list">
+          <li>📍 <div><b>Endereço</b><br>Av. Dona Cherubina Viana 1206 — Cotia/SP</div></li>
+          <li>🕘 <div><b>Horário</b><br>25/10/2025 — Cerimônia às 09h00</div></li>
+          <li>🌿 <div><b>Ambiente</b><br>Jardim a céu aberto; sugerimos calçados confortáveis</div></li>
+          
+          <li>📱 <div><b>Hashtag</b><br>#Sarah&Eduardo2025</div></li>
+        </ul>
+        <div class="row mt-20">
+          <a class="btn-primary" href="https://www.google.com/maps/@-23.5875692,-46.8438038,3a,75y,55.75h,93.02t/data=!3m7!1e1!3m5!1sJqdBQEOxteUW-gfpdyE8eA!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-3.0166198370099835%26panoid%3DJqdBQEOxteUW-gfpdyE8eA%26yaw%3D55.75189819858448!7i16384!8i8192?entry=ttu&g_ep=EgoyMDI1MDkwMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener">Abrir no Maps</a>
+          
+        </div>
+      </div>
+      <figure class="card">
+        <img src="Captura de tela 2025-09-06 164002.png" alt="Foto do espaço de eventos ao ar livre"/>
+      </figure>
+    </div>
+  </section>
+
+  <section id="trajes">
+  
+ 
+
+  <section class="trajes">
+    <p class="lead reveal">Amigos, para deixar nossa paleta de cores ainda mais especial, pedimos com carinho que evitem os tons de verde e terrosos. Essas cores já estão reservadas para a cerimônia e madrinhas</p>
+  <h2>Trajes Femininos</h2>
+  <div class="gallery">
+    <img src="trafej3.jpg" alt="Traje Feminino 1" class="gallery-item">
+    <img src="trajef.jpg" alt="Traje Feminino 2" class="gallery-item">
+    <img src="trajef.webp" alt="Traje Feminino 3" class="gallery-item">
+    <img src="trajef4.webp" alt="Traje Feminino 4" class="gallery-item">
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div id="lightbox" class="lightbox">
+  <span class="close">&times;</span>
+  <img class="lightbox-img" src="" alt="Imagem Ampliada">
+</div>
+
+<section class="trajes">
+  <h2>Trajes Masculinos</h2>
+  <div class="gallery">
+    <img src="gala.jpg" alt="Traje Feminino 1" class="gallery-item">
+    <img src="traje_ideal_casamento_passeio_completo.jpg" alt="Traje Feminino 2" class="gallery-item">
+  
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div id="lightbox" class="lightbox">
+  <span class="close">&times;</span>
+  <img class="lightbox-img" src="" alt="Imagem Ampliada">
+</div>
+
+  <section id="galeria">
+ <h2 class="reveal center">Momentos Inesquecíveis</h2>
+ <p class="lead reveal center">Confira alguns dos nossos momentos especiais ao longo da jornada. 📸</p>
+
+ <div class="grid grid-2 mt-20">
+ <figure class="card photo-card reveal">
+ <img src="fotosegurandobalao.jpeg" alt="Casal caminhando de mãos dadas"/>
+ <figcaption class="photo-caption">Um dia inesquecível!</figcaption>
+ </figure>
+ <figure class="card photo-card reveal">
+<img src="segurandoamaodela.jpeg" alt="Casal sorrindo em um pôr do sol"/>
+ <figcaption class="photo-caption">Duas almas, um só destino.</figcaption>
+ </figure>
+ <figure class="card photo-card reveal">
+ <img src="WhatsApp Image 2025-09-06 at 14.29.34.jpeg" alt="Casal em uma trilha na natureza"/>
+<figcaption class="photo-caption">Aventuras juntos, sempre em busca de novas paisagens.</figcaption>
+ </figure>
+ <figure class="card photo-card reveal">
+ <img src="WhatsApp Image 2025-09-06 at 14.29.36.jpeg" alt="Casal em um café aconchegante"/>
+ <figcaption class="photo-caption">Em nós, o amor cumpriu o que Deus sonhou: dois se tornaram um.</figcaption>
+ </figure>
+ </div>
+
+
+</section>
+
+  <section id="rsvp">
+  <h2 class="reveal">Confirmação de Presença</h2>
+  <p class="lead reveal">Ajude-nos a planejar com carinho. Preencha seus dados e deixe um recadinho. 💌</p>
+
+  <form class="card reveal" id="formRSVP" style="padding:18px;display:grid;gap:10px">
+    <div class="grid grid-2">
+      <label>Nome completo<br><input required name="nome" placeholder="Seu nome" style="width:100%;padding:12px;border-radius:12px;border:1px solid #0000001a"></label>
+      <label>E-mail<br><input required type="email" name="email" placeholder="voce@email.com" style="width:100%;padding:12px;border-radius:12px;border:1px solid #0000001a"></label>
+    </div>
+    <div class="grid grid-2">
+      <label>Telefone<br><input name="tel" placeholder="(DDD) 90000-0000" style="width:100%;padding:12px;border-radius:12px;border:1px solid #0000001a"></label>
+      <label>Nº de acompanhantes<br><input required type="number" min="0" max="5" name="acomp" value="0" style="width:100%;padding:12px;border-radius:12px;border:1px solid #0000001a"></label>
+    </div>
+    <label>Mensagem<br><textarea name="msg" rows="4" placeholder="Deixe um recado para os noivos" style="width:100%;padding:12px;border-radius:12px;border:1px solid #0000001a"></textarea></label>
+   
+    <div class="row"> <button class="btn-primary" type="submit">Enviar confirmação</button>
+        <span id="rsvpStatus" class="pill" aria-live="polite"></span>
+     </div>
+    <input type="hidden" name="presenteReservado" id="presenteReservado" value="" />
+  
+  </form>
+</section>
+
+<script>
+ 
+
+document.getElementById('formRSVP').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const nome = this.nome.value.trim();
+  const email = this.email.value.trim();
+  const tel = this.tel.value.trim();
+  const acomp = this.acomp.value.trim();
+  const msg = this.msg.value.trim();
+  const presente = this.presenteReservado.value.trim();
+  const pixKey = document.getElementById('pixKey').textContent.trim();
+
+  // Mensagem formatada, linha por linha
+  let texto = `Olá! Gostaria de confirmar minha presença no evento. 🥳\n`;
+  if (presente) texto += `\n*Presente escolhido:* ${presente}\n`;
+  texto += `\n*Nome:* ${nome}\n`;
+  texto += `*E-mail:* ${email}\n`;
+  texto += `*Telefone:* ${tel}\n`;
+  texto += `*Acompanhantes:* ${acomp}\n`;
+  texto += `*Mensagem:* ${msg}\n`;
+  texto += `\n*PIX:* ${pixKey}`; // destaque em negrito
+
+  // Monta URL do WhatsApp
+  const numeroWhatsApp = '5511940095681';
+  const url = `https://wa.me/${5511940095681}?text=${encodeURIComponent(texto)}`;
+  window.open(url, '_blank');
+
+  // Limpa formulário
+  this.reset();
+  document.getElementById('presenteReservado').value = '';
+});
+
+</script>
+
+
+  <section id="faq">
+    <h2 class="reveal">Perguntas Frequentes</h2>
+    <div class="accordion reveal">
+      <details class="card">
+        <summary>Posso levar crianças?</summary>
+        <div class="panel">Claro!</div>
+      </details>
+      <details class="card">
+        <summary>Há lista de presentes em loja física?</summary>
+        <div class="panel">Estamos priorizando a lista online e PIX.</div>
+      </details>
+      <details class="card">
+        <summary>Como marcar presença nas fotos?</summary>
+        <div class="panel">Use a hashtag <b>#Sarah&Eduardo2025</b> no Instagram e marque nosso perfil. 📸</div>
+      </details>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div>Com carinho, <b>Sarah &amp; Eduardo</b></div>
+      <div class="copy">© 2025 — Todos os direitos reservados</div>
+    </div>
+  </footer>
+
+  <button class="fab" id="toTop" title="Voltar ao topo">↑</button>
+
+  <script>
+// ===== Utilidades =====
+const $ = (sel, ctx=document) => ctx.querySelector(sel);
+const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+
+// ===== Smooth scroll =====
+$$("a.navlink").forEach(a => a.addEventListener("click", e => {
+  e.preventDefault();
+  const id = a.getAttribute("href");
+  document.querySelector(id)?.scrollIntoView({behavior:"smooth"});
+}));
+
+// ===== Scroll-to-top =====
+const toTop = $("#toTop");
+toTop.addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
+window.addEventListener("scroll", () => {
+  toTop.style.display = window.scrollY > 500 ? "block" : "none";
+});
+
+// ===== Countdown para 25/10/2025 15:00 =====
+const alvo = new Date("2025-10-25T15:00:00-03:00").getTime();
+const badgeDias = $("#diasRestantes");
+const cdDias = $("#cdDias"), cdHoras=$("#cdHoras"), cdMin=$("#cdMin"), cdSeg=$("#cdSeg");
+function atualizarCountdown(){
+  const agora = new Date().getTime();
+  let diff = Math.max(0, alvo - agora);
+  const dias = Math.floor(diff / (1000*60*60*24)); diff -= dias*24*60*60*1000;
+  const horas = Math.floor(diff / (1000*60*60)); diff -= horas*60*60*1000;
+  const mins = Math.floor(diff / (1000*60)); diff -= mins*60*1000;
+  const segs = Math.floor(diff / 1000);
+  badgeDias.textContent = dias;
+  cdDias.textContent = dias; cdHoras.textContent = String(horas).padStart(2,'0'); cdMin.textContent = String(mins).padStart(2,'0'); cdSeg.textContent = String(segs).padStart(2,'0');
+}
+atualizarCountdown(); setInterval(atualizarCountdown, 1000);
+
+// ===== Scroll reveal =====
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('show'); io.unobserve(en.target);} });
+}, {threshold:.12});
+$$(".reveal").forEach(el=>io.observe(el));
+
+// ===== Copiar PIX =====
+const pixKeyEl = $("#pixKey");
+const copiar = () => {
+  navigator.clipboard.writeText(pixKeyEl.textContent.trim()).then(()=>{
+    const btns = [$("#btnCopiarPix"), $("#copyPix2")].filter(Boolean);
+    btns.forEach(b=>{ if(!b) return; const old=b.textContent; b.textContent='Copiado!'; setTimeout(()=>b.textContent= old.includes('Copiar')? 'Copiar PIX':'Copiar', 1600); });
+  });
+};
+$("#btnCopiarPix").addEventListener("click", copiar);
+$("#copyPix2").addEventListener("click", copiar);
+
+// ===== Filtro/Busca Presentes =====
+const grid = $("#giftGrid");
+function aplicarFiltros() {
+  const termo = $("#busca").value.toLowerCase();
+  const filtro = $("#filtro").value;
+  $$(".gift-card", grid).forEach(card => {
+    const titulo = card.dataset.title.toLowerCase();
+    const status = card.dataset.status;
+    const condBusca = titulo.includes(termo);
+    const condFiltro = filtro === 'todos' || (filtro === 'disponivel' && status !== 'reservado') || (filtro === 'reservado' && status === 'reservado');
+    card.style.display = (condBusca && condFiltro) ? '' : 'none';
+  });
+}
+$("#busca").addEventListener("input", aplicarFiltros);
+$("#filtro").addEventListener("change", aplicarFiltros);
+
+// ===== Sistema de Reservas (toggle livre, WhatsApp) =====
+document.querySelectorAll(".gift-card").forEach((card) => {
+  const btn = card.querySelector(".reservar");
+  const statusEl = card.querySelector(".status");
+  const title = card.dataset.title;
+
+  // Estado inicial
+  card.dataset.status = "disponivel";
+  statusEl.textContent = "disponível";
+  statusEl.className = "status available";
+  btn.textContent = "Reservar";
+  btn.classList.remove("reserved");
+
+  // Clique no botão
+  btn.addEventListener("click", () => {
+    if (card.dataset.status === "disponivel") {
+      // Marca como reservado
+      card.dataset.status = "reservado";
+      statusEl.textContent = "reservado";
+      statusEl.className = "status reserved";
+      btn.textContent = "Reservado";
+      btn.classList.add("reserved");
+
+      // Preenche campo oculto para WhatsApp
+      document.getElementById("presenteReservado").value = title;
+
+      // Mensagem para o usuário
+      alert(`Ótimo! Você escolheu o presente "${title}". Agora, por favor, preencha o formulário de confirmação de presença abaixo para finalizar.`);
+
+      // Scroll para formulário
+      document.querySelector('#rsvp').scrollIntoView({ behavior: "smooth" });
+
+    } else {
+      // Volta para disponível
+      card.dataset.status = "disponivel";
+      statusEl.textContent = "disponível";
+      statusEl.className = "status available";
+      btn.textContent = "Reservar";
+      btn.classList.remove("reserved");
+
+      // Limpa campo do formulário se for o mesmo presente
+      const input = document.getElementById("presenteReservado");
+      if (input.value === title) input.value = "";
+    }
+  });
+});
+
+// ===== RSVP para WhatsApp =====
+document.getElementById('formRSVP').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const nome = encodeURIComponent(this.nome.value);
+  const email = encodeURIComponent(this.email.value);
+  const tel = encodeURIComponent(this.tel.value);
+  const acomp = encodeURIComponent(this.acomp.value);
+  const msg = encodeURIComponent(this.msg.value);
+  const presente = encodeURIComponent(this.presenteReservado.value);
+
+  let texto = `Olá! Gostaria de confirmar minha presença no evento. 🥳`;
+  if (presente) texto += `\n\n*Presente escolhido:* ${decodeURIComponent(presente)}`;
+  texto += `\n\n*Nome:* ${decodeURIComponent(nome)}`;
+  texto += `\n*E-mail:* ${decodeURIComponent(email)}`;
+  texto += `\n*Telefone:* ${decodeURIComponent(tel)}`;
+  texto += `\n*Acompanhantes:* ${decodeURIComponent(acomp)}`;
+  texto += `\n*Mensagem:* ${decodeURIComponent(msg)}`;
+
+  const numeroWhatsApp = '5511940095681';
+  const url = `https://wa.me/${numeroWhatsApp}?text=${texto}`;
+  window.open(url, '_blank');
+
+  this.reset();
+  document.getElementById('presenteReservado').value = '';
+});
+
+// ===== Confete sutil =====
+(function(){
+  const c = document.getElementById('confetti');
+  const ctx = c.getContext('2d');
+  let W, H; function resize(){ W = c.width = window.innerWidth; H = c.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  const N = 80, parts = Array.from({length:N}, (_,i)=>({
+    x: Math.random()*W, y: -Math.random()*H, r: 2+Math.random()*3,
+    vy: 1+Math.random()*2.5, vx: (Math.random()-.5)*.6, a: Math.random()*Math.PI*2
+  }));
+  let active = !localStorage.getItem('confettiSeen');
+  function step(){
+    ctx.clearRect(0,0,W,H);
+    if(active){
+      parts.forEach(p=>{
+        p.x+=p.vx; p.y+=p.vy; p.a+=.03;
+        ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a);
+        ctx.fillStyle = ['#c98986','#7aa4a4','#c8a86b','#ffffff'][p.r|0 % 4];
+        ctx.fillRect(-p.r,-p.r,p.r*2,p.r*2);
+        ctx.restore();
+        if(p.y>H+10){ p.y=-10; p.x=Math.random()*W; }
+      });
+    }
+    requestAnimationFrame(step);
+  }
+  step();
+  setTimeout(()=>{active=false; localStorage.setItem('confettiSeen','1'); ctx.clearRect(0,0,W,H);}, 4000);
+})();
+
+// ===== Música =====
+const musica = document.getElementById('musica-casamento');
+const btnPlayPause = document.getElementById('play-pause');
+let musicaTocando = false;
+function tocarMusica() {
+  if (!musicaTocando) {
+    musica.play().then(() => { musicaTocando = true; }).catch(()=>{});
+  }
+  document.removeEventListener('click', tocarMusica);
+  document.removeEventListener('scroll', tocarMusica);
+}
+document.addEventListener('click', tocarMusica);
+document.addEventListener('scroll', tocarMusica);
+
+btnPlayPause.addEventListener('click', () => {
+  if (musica.paused) {
+    musica.play(); btnPlayPause.textContent = '⏸️';
+  } else {
+    musica.pause(); btnPlayPause.textContent = '🎵';
+  }
+});
+
+
+
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.querySelector('.lightbox-img');
+const closeBtn = document.querySelector('.close');
+
+document.querySelectorAll('.gallery-item').forEach(item => {
+  item.addEventListener('click', () => {
+    lightbox.style.display = 'flex';
+    lightboxImg.src = item.src;
+    lightboxImg.alt = item.alt;
+  });
+});
+
+closeBtn.addEventListener('click', () => {
+  lightbox.style.display = 'none';
+});
+
+lightbox.addEventListener('click', e => {
+  if(e.target !== lightboxImg && e.target !== closeBtn){
+    lightbox.style.display = 'none';
+  }
+});
+
+</script>
+
+</body>
+</html>
